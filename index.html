@@ -1,36 +1,46 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MasterMinds 🎓</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <title>Digital Dean: Build Your Master's Empire</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="dashboard">
-    <h2>🎓 Уровень магистратур</h2>
-    <div class="progress-bar">
-      <div class="level" style="width: 33%;">Базовая</div>
+    <div class="game-container">
+        <h1>🎓 Digital Dean</h1>
+        
+        <!-- Статус -->
+        <div class="status">
+            <p>📅 Год: <span id="year">1</span></p>
+            <p>💰 Бюджет: $<span id="budget">500000</span></p>
+            <p>🌟 Репутация: <span id="reputation">70</span></p>
+            <p>🎓 Студенты: <span id="students">0</span></p>
+        </div>
+
+        <!-- Создание программ -->
+        <div class="actions">
+            <h2>Создать магистратуру</h2>
+            <select id="program-select">
+                <option value="data-science">Data Science ($50k)</option>
+                <option value="ai-ethics">AI Ethics ($80k)</option>
+                <option value="quantum">Quantum Computing ($120k)</option>
+            </select>
+            <button onclick="createProgram()">Создать</button>
+        </div>
+
+        <!-- Программы -->
+        <div class="programs" id="programs">
+            <h2>Ваши программы</h2>
+            <p>Пока нет программ...</p>
+        </div>
+
+        <!-- Лог событий -->
+        <div class="log" id="log">
+            <h2>События</h2>
+            <p>Игра началась!</p>
+        </div>
     </div>
 
-    <h2>🧩 Качество образования: <span id="quality">50%</span></h2>
-    <div class="quality-meter">
-      <div id="quality-fill" class="quality-medium"></div>
-    </div>
-
-    <h2>💰 Бюджет: <span id="budget">10,000 ₽</span></h2>
-    <h2>🎓 Студенты: <span id="students">100</span></h2>
-
-    <div class="controls">
-      <button onclick="upgradeProgram()">🛠 Улучшить магистратуру</button>
-      <button onclick="investInQuality()">🧑‍🏫 Инвестировать в качество</button>
-      <button onclick="launchCampaign()">📢 Запустить рекламу</button>
-    </div>
-
-    <div id="newsFeed" class="news-feed"></div>
-    <div id="message" class="message"></div>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
