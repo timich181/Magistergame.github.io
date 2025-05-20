@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Первая Профа 🎓</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🎓 Первая профа</h1>
+    <p>Обучите <strong>235 млн студентов</strong>, не обанкротившись!</p>
+
+    <div class="stats">
+      <p>💰 Бюджет: <span id="budget">10 000 ₽</span></p>
+      <p>🎓 Студенты: <span id="students">100</span></p>
+      <p>🧩 Сопровождение: <span id="support">50%</span></p>
+    </div>
+
+    <div class="slider-group">
+      <label>🛠 Разработка: <span id="devCost">4 000 ₽</span></label>
+      <input type="range" id="devSlider" min="0" max="10000" value="4000" step="100"/>
+
+      <label>📢 Реклама: <span id="adCost">3 000 ₽</span></label>
+      <input type="range" id="adSlider" min="0" max="10000" value="3000" step="100"/>
+
+      <label>🧑‍🏫 Сопровождение: <span id="supCost">3 000 ₽</span></label>
+      <input type="range" id="supSlider" min="0" max="10000" value="3000" step="100"/>
+    </div>
+
+    <button id="nextSemester">▶ Запустить семестр</button>
+
+    <div class="result" id="result"></div>
+    <div class="message" id="message"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
