@@ -1,46 +1,23 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MasterMinds 🎓</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="container">
-    <h1>🎓 MasterMinds</h1>
-    <p>Обучите <strong>235 млн студентов</strong>, не обанкротившись!</p>
-
-    <div class="stats">
-      <p>💰 Бюджет: <span id="budget">10 000 ₽</span></p>
-      <p>🎓 Студенты: <span id="students">100</span></p>
-      <p>🧩 Сопровождение: <span id="support">50%</span></p>
-    </div>
-
-    <div class="slider-group">
-      <label>🛠 Разработка: <span id="devCost">4 000 ₽</span></label>
-      <input type="range" id="devSlider" min="0" max="10000" value="4000" step="100"/>
-
-      <label>📢 Реклама: <span id="adCost">3 000 ₽</span></label>
-      <input type="range" id="adSlider" min="0" max="10000" value="3000" step="100"/>
-
-      <label>🧑‍🏫 Сопровождение: <span id="supCost">3 000 ₽</span></label>
-      <input type="range" id="supSlider" min="0" max="10000" value="3000" step="100"/>
-    </div>
-
-    <div class="semester-timer">
-      <div id="timerBar" class="timer-bar"></div>
-    </div>
-
-    <button id="nextSemester">▶ Запустить семестр</button>
-
-    <canvas id="chart" width="400" height="200"></canvas>
-
-    <div id="newsFeed" class="news-feed"></div>
-    <div class="message" id="message"></div>
+<div class="dashboard">
+  <h2>🎓 Уровень магистратур</h2>
+  <div class="progress-bar">
+    <div class="level" style="width: 33%;">Базовая</div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js "></script>
-  <script src="script.js"></script>
-</body>
-</html>
+  <h2>🧩 Качество образования: <span id="quality">50%</span></h2>
+  <div class="quality-meter">
+    <div id="quality-fill" class="quality-good"></div>
+  </div>
+
+  <h2>💰 Бюджет: <span id="budget">10,000 ₽</span></h2>
+  <h2>🎓 Студенты: <span id="students">100</span></h2>
+
+  <div class="controls">
+    <button onclick="upgradeProgram()">🛠 Улучшить магистратуру</button>
+    <button onclick="investInQuality()">🧑‍🏫 Инвестировать в качество</button>
+    <button onclick="launchCampaign()">📢 Запустить рекламу</button>
+  </div>
+
+  <div id="newsFeed" class="news-feed"></div>
+  <div id="message" class="message"></div>
+</div>
