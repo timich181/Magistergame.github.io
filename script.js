@@ -1,120 +1,111 @@
-let budget = 10000;
-let students = 100;
-let quality = 50;
-let programLevel = 1; // 1 - базовая, 2 - продвинутая, 3 - экспертная
-let semester = 0;
+let state = {
+    year: 1,
+    budget: 500000,
+    reputation: 70,
+    students: 0,
+    programs: [],
+    gameOver: false
+};
 
-const budgetEl = document.getElementById("budget");
-const studentsEl = document.getElementById("students");
-const qualityEl = document.getElementById("quality");
-const qualityFill = document.getElementById("quality-fill");
+const PROGRAM_COSTS = {
+    "data-science": 50000,
+    "ai-ethics": 80000,
+    "quantum": 120000
+};
 
-// Обновление интерфейса
+const PROGRAM_STUDENTS = {
+    "data-science": 100,
+    "ai-ethics": 60,
+    "quantum": 40
+};
+
 function updateUI() {
-  budgetEl.textContent = `${formatNumber(budget)} ₽`;
-  studentsEl.textContent = formatNumber(students);
-  qualityEl.textContent = `${Math.floor(quality)}%`;
-
-  // Цвет качества
-  if (quality < 50) {
-    qualityFill.className = "quality-bad";
-  } else if (quality < 80) {
-    qualityFill.className = "quality-medium";
-  } else {
-    qualityFill.className = "quality-good";
-  }
-
-  // Уровень магистратуры
-  const progressBar = document.querySelector(".progress-bar .level");
-  if (programLevel === 1) {
-    progressBar.style.width = "33%";
-    progressBar.textContent = "Базовая";
-  } else if (programLevel === 2) {
-    progressBar.style.width = "66%";
-    progressBar.textContent = "Продвинутая";
-  } else if (programLevel === 3) {
-    progressBar.style.width = "100%";
-    progressBar.textContent = "Экспертная";
-  }
+    document.getElementById('year').textContent = state.year;
+    document.getElementById('budget').textContent = state.budget;
+    document.getElementById('reputation').textContent = state.reputation;
+    document.getElementById('students').textContent = state.students;
+    
+    // Обновляем список программ
+    const programsDiv = document.getElementById('programs');
+    programsDiv.innerHTML = "<h2>Ваши программы</h2>";
+    if (state.programs.length === 0) {
+        programsDiv.innerHTML += "<p>Пока нет программ...</p>";
+    } else {
+        state.programs.forEach(prog => {
+            programsDiv.innerHTML += `<div>• ${prog}</div>`;
+        });
+    }
 }
 
-// Улучшение магистратуры
-function upgradeProgram() {
-  if (programLevel >= 3) return;
-  const cost = programLevel === 1 ? 5000 : 10000;
-  if (budget >= cost) {
-    budget -= cost;
-    programLevel++;
-    addNews(`🛠 Магистратура улучшена до уровня ${programLevel}`);
-  }
-  updateUI();
+function logEvent(message) {
+    const log = document.getElementById('log');
+    log.innerHTML += `<p>📅 Год ${state.year}: ${message}</p>`;
+    log.scrollTop = log.scrollHeight;
 }
 
-// Инвестиции в качество
-function investInQuality() {
-  const investment = 2000;
-  if (budget >= investment) {
-    budget -= investment;
-    quality = Math.min(100, quality + 10);
-    addNews(`📈 Качество образования повышено до ${Math.floor(quality)}%`);
-  }
-  updateUI();
+function createProgram() {
+    if (state.gameOver) return;
+    
+    const select = document.getElementById('program-select');
+    const program = select.value;
+    const cost = PROGRAM_COSTS[program];
+    
+    if (state.budget >= cost) {
+        state.budget -= cost;
+        state.programs.push(program);
+        state.students += PROGRAM_STUDENTS[program];
+        logEvent(`Запущена программа "${program}". Привлечено ${PROGRAM_STUDENTS[program]} студентов.`);
+        checkWinCondition();
+    } else {
+        logEvent("❌ Недостаточно средств для создания программы!");
+    }
+    
+    updateUI();
 }
 
-// Реклама
-function launchCampaign() {
-  const cost = 3000;
-  if (budget >= cost) {
-    budget -= cost;
-    students += Math.floor(students * 0.2);
-    addNews(`📢 Реклама запущена: +20% студентов`);
-  }
-  updateUI();
+function nextYear() {
+    if (state.gameOver) return;
+    
+    state.year++;
+    
+    // Доход от студентов
+    const income = state.students * 1000;
+    state.budget += income;
+    
+    // Случайные события
+    if (Math.random() < 0.2) {
+        // Хакерская атака
+        state.budget -= 20000;
+        state.reputation -= 10;
+        logEvent("⚠️ Хакерская атака! Потеряно $20,000 и 10 репутации.");
+    }
+    
+    // Проверка условий проигрыша
+    if (state.budget <= 0) {
+        logEvent("💀 Бюджет исчерпан. Игра окончена.");
+        state.gameOver = true;
+    }
+    
+    if (state.reputation <= 0) {
+        logEvent("💀 Репутация упала до нуля. Игра окончена.");
+        state.gameOver = true;
+    }
+    
+    checkWinCondition();
+    updateUI();
 }
 
-// Случайные события
-function randomEvent() {
-  const event = Math.random();
-  if (event < 0.1) {
-    budget -= 5000;
-    addNews("⚠️ Пандемия: бюджет уменьшен на 5000 ₽");
-  } else if (event < 0.2) {
-    students += 10000;
-    addNews("🎉 Грант: +10,000 студентов");
-  }
+function checkWinCondition() {
+    if (state.year >= 10 && 
+        state.students >= 50000 && 
+        state.programs.length >= 3 && 
+        state.reputation >= 90) {
+        logEvent("🏆 Поздравляем! Вы стали Global EdTech Leader!");
+        state.gameOver = true;
+    }
 }
 
-// Проверка победы/поражения
-function checkWinLose() {
-  if (budget < 0) {
-    showMessage("💀 У вас не получилось сделать всех магистрами...", "lose");
-  } else if (students >= 235_000_000) {
-    showMessage("🌟 Вы обучаете всех студентов мира. Невероятно!", "win");
-  }
-}
-
-// Всплывающие новости
-function addNews(message) {
-  const newsItem = document.createElement("div");
-  newsItem.className = "news-item";
-  newsItem.textContent = message;
-  document.getElementById("newsFeed").appendChild(newsItem);
-  setTimeout(() => newsItem.remove(), 5000);
-}
-
-// Сообщение о результате
-function showMessage(text, type) {
-  const messageEl = document.getElementById("message");
-  messageEl.textContent = text;
-  messageEl.className = `message ${type}`;
-  window.scrollTo(0, document.body.scrollHeight);
-}
-
-// Форматирование чисел
-function formatNumber(num) {
-  if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(1)} млн`;
-  if (num >= 1_000) return `${(num / 1_000).toFixed(0)} тыс`;
-  return num.toString();
-}
+// Автоматический переход к следующему году каждые 5 секунд
+setInterval(nextYear, 5000);
 
 updateUI();
